@@ -1,6 +1,6 @@
 license_id: cc-by
 methodology: Registry
-caveats: This dataset is refreshed daily, but the source datasets have different update schedules. Please refer to the [source datasets](https://data.humdata.org/dataset/?dataseries_name=COD+-+Subnational+Population+Statistics) to verify their specific update frequency.
+caveats: HDX HAPI is refreshed daily, but the source datasets may have different update schedules. Please refer to the source datasets for each subcategory to verify their specific update frequency.
 dataset_source: UNHCR - The UN Refugee Agency
 package_creator: HDX Data Systems Team
 private: False

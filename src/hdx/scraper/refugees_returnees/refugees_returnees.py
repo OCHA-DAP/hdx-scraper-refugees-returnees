@@ -76,7 +76,7 @@ class RefugeesReturnees:
         group_headers = [
             "Year",
             "Country of Origin Code",
-            "Country of Asylum Name",
+            "Country of Asylum Code",
             "Population Type",
         ]
         column_dict = {group_header: "first" for group_header in group_headers}
@@ -91,7 +91,7 @@ class RefugeesReturnees:
             origin_location_code = row["Country of Origin Code"]
             origin_hrp, origin_gho = get_hrp_gho(origin_location_code, hrps, ghos)
 
-            asylum_location_code = row["Country of Asylum Name"]
+            asylum_location_code = row["Country of Asylum Code"]
             asylum_hrp, asylum_gho = get_hrp_gho(asylum_location_code, hrps, ghos)
 
             year = row["Year"]
@@ -145,7 +145,7 @@ class RefugeesReturnees:
                 }
                 dict_of_lists_add(self.data, data_type, new_row)
 
-        return list(self.data.keys())
+        return sorted(list(self.data.keys()))
 
     def generate_dataset(self, dataset_type: str) -> Dataset:
         dataset = Dataset(
