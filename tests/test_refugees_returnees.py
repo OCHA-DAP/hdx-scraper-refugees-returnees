@@ -135,3 +135,59 @@ class TestRefugeesReturnees:
                         join(tempdir, "hdx_hapi_returnees_global.csv"),
                         join(fixtures_dir, "hdx_hapi_returnees_global.csv"),
                     )
+
+                    dataset = ref_ret.generate_dataset("refugees")
+                    dataset.update_from_yaml(
+                        path=join(config_dir, "hdx_dataset_static.yaml")
+                    )
+                    assert dataset == {
+                        "name": "hdx-hapi-refugees",
+                        "title": "HDX HAPI - Affected People: Refugees & Persons of "
+                        "Concern",
+                        "dataset_date": "[2020-01-01T00:00:00 TO 2023-12-31T23:59:59]",
+                        "tags": [
+                            {
+                                "name": "refugees",
+                                "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+                            }
+                        ],
+                        "groups": [{"name": "world"}],
+                        "license_id": "cc-by",
+                        "methodology": "Registry",
+                        "caveats": "HDX HAPI is refreshed daily, but the source datasets "
+                        "may have different update schedules. Please refer to the source "
+                        "datasets for each subcategory to verify their specific update "
+                        "frequency.",
+                        "dataset_source": "UNHCR - The UN Refugee Agency",
+                        "package_creator": "HDX Data Systems Team",
+                        "private": False,
+                        "maintainer": "aa13de36-28c5-47a7-8d0b-6d7c754ba8c8",
+                        "owner_org": "hdx-hapi",
+                        "data_update_frequency": 1,
+                        "notes": "This dataset contains data obtained from the [HDX "
+                        "Humanitarian API](https://hapi.humdata.org/) (HDX HAPI), which "
+                        "provides standardized humanitarian indicators designed for "
+                        "seamless interoperability from multiple sources. The data "
+                        "facilitates automated workflows and visualizations to support "
+                        "humanitarian decision making. For more information, please see "
+                        "the HDX HAPI [landing page](https://data.humdata.org/hapi) and "
+                        "[documentation](https://hdx-hapi.readthedocs.io/en/latest/).\n",
+                        "subnational": "0",
+                        "dataset_preview": "no_preview",
+                    }
+
+                    resources = dataset.get_resources()
+                    assert resources == [
+                        {
+                            "name": "Global Affected People: Refugees & Persons of "
+                            "Concern (2020-2024)",
+                            "description": "Refugees and Persons of Concern data (2020-"
+                            "2024) from HDX HAPI, please see [the documentation]"
+                            "(https://hdx-hapi.readthedocs.io/en/latest/data_usage_guides"
+                            "/affected_people/#refugees-persons-of-concern) for more "
+                            "information",
+                            "format": "csv",
+                            "resource_type": "file.upload",
+                            "url_type": "upload",
+                        }
+                    ]
