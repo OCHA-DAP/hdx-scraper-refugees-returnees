@@ -2,6 +2,7 @@
 """refugees_returnees scraper"""
 
 import logging
+from copy import deepcopy
 from typing import Dict, List, Tuple
 
 from hdx.api.configuration import Configuration
@@ -142,39 +143,65 @@ class RefugeesReturnees:
                     "resource_hdx_id": resource_id,
                     "warning": None,
                     "error": None,
+                    "year": year,
                 }
                 dict_of_lists_add(self.data, data_type, new_row)
 
         return sorted(list(self.data.keys()))
 
-    def generate_dataset(self, dataset_type: str) -> Dataset:
+    def generate_dataset(self, data_type: str) -> Dataset:
         dataset = Dataset(
             {
-                "name": self._configuration["output_datasets"][dataset_type]["name"],
-                "title": self._configuration["output_datasets"][dataset_type]["title"],
+                "name": self._configuration["output_datasets"][data_type]["name"],
+                "title": self._configuration["output_datasets"][data_type]["title"],
             }
         )
-        year_start = min(self.years[dataset_type])
-        year_end = max(self.years[dataset_type])
+        year_start = min(self.years[data_type])
+        year_end = max(self.years[data_type])
         dataset.set_time_period_year_range(year_start, year_end)
 
-        tags = self._configuration["tags"][dataset_type]
+        tags = self._configuration["tags"][data_type]
         dataset.add_tags(tags)
 
         dataset.add_other_location("world")
 
         hxl_tags = self._configuration["hxl_tags"]
         headers = list(hxl_tags.keys())
-        resource_data = self._configuration["resources"][dataset_type]
-        dataset.generate_resource_from_iterable(
-            headers,
-            self.data[dataset_type],
-            hxl_tags,
-            self._temp_dir,
-            f"hdx_hapi_{dataset_type}_global.csv",
-            resource_data,
-            encoding="utf-8-sig",
-        )
+
+        if data_type == "returnees":
+            dataset.generate_resource_from_iterable(
+                headers,
+                self.data[data_type],
+                hxl_tags,
+                self._temp_dir,
+                f"hdx_hapi_{data_type}_global.csv",
+                self._configuration["resources"][data_type],
+                encoding="utf-8-sig",
+            )
+            return dataset
+
+        # break up refugees data
+        start_year = year_start - year_start % 5
+        for sy in reversed(range(start_year, year_end + 1, 5)):
+            ey = sy + 4
+            year_range = f"{sy}-{ey}"
+
+            resource_data = deepcopy(self._configuration["resources"][data_type])
+            resource_data["name"] = resource_data["name"].replace("YYYY", year_range)
+            resource_data["description"] = resource_data["description"].replace(
+                "YYYY", year_range
+            )
+            filename = f"hdx_hapi_{data_type}_global_{year_range.replace('-', '_')}.csv"
+            rows = [r for r in self.data[data_type] if sy <= r["year"] <= ey]
+            dataset.generate_resource_from_iterable(
+                headers,
+                rows,
+                hxl_tags,
+                self._temp_dir,
+                filename,
+                resource_data,
+                encoding="utf-8-sig",
+            )
 
         return dataset
 

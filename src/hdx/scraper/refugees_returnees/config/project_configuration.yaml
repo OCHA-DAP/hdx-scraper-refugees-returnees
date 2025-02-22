@@ -14,8 +14,8 @@ output_datasets:
 
 resources:
   refugees:
-    name: "Global Affected People: Refugees & Persons of Concern"
-    description: "Refugees and Persons of Concern data from HDX HAPI, please see [the documentation](https://hdx-hapi.readthedocs.io/en/latest/data_usage_guides/affected_people/#refugees-persons-of-concern) for more information"
+    name: "Global Affected People: Refugees & Persons of Concern (YYYY)"
+    description: "Refugees and Persons of Concern data (YYYY) from HDX HAPI, please see [the documentation](https://hdx-hapi.readthedocs.io/en/latest/data_usage_guides/affected_people/#refugees-persons-of-concern) for more information"
   returnees:
     name: "Global Affected People: Returnees"
     description: "Returnees data from HDX HAPI, please see [the documentation](https://hdx-hapi.readthedocs.io/en/latest/data_usage_guides/affected_people/#returnees) for more information"
