@@ -251,9 +251,9 @@ def get_min_and_max_age(age_range: str) -> (int | None, int | None):
     ages = age_range.split("-")
     if len(ages) == 2:
         # Format: 0-5
-        min_age, max_age = int(ages[0]), int(ages[1])
+        min_age, max_age = float(ages[0]), float(ages[1])
     else:
         # Format: 80+
-        min_age = int(age_range.replace("+", ""))
+        min_age = float(age_range.replace("+", ""))
         max_age = None
     return min_age, max_age
