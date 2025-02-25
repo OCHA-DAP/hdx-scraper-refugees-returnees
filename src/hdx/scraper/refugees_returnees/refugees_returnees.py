@@ -89,11 +89,26 @@ class RefugeesReturnees:
         hrps = {}
         ghos = {}
         for row in rows:
+            error = None
+            missing_locations = []
             origin_location_code = row["Country of Origin Code"]
-            origin_hrp, origin_gho = get_hrp_gho(origin_location_code, hrps, ghos)
+            origin_hrp, origin_gho = get_hrp_gho(
+                origin_location_code, hrps, ghos, missing_locations
+            )
 
             asylum_location_code = row["Country of Asylum Code"]
-            asylum_hrp, asylum_gho = get_hrp_gho(asylum_location_code, hrps, ghos)
+            asylum_hrp, asylum_gho = get_hrp_gho(
+                asylum_location_code, hrps, ghos, missing_locations
+            )
+
+            if len(missing_locations) > 0:
+                for missing_location in missing_locations:
+                    self._error_handler.add_message(
+                        "RefugeesReturnees",
+                        dataset["name"],
+                        f"Could not find iso code {missing_location}",
+                    )
+                error = f"Non matching country code(s) {','.join(set(missing_locations))}"
 
             year = row["Year"]
             start_date, end_date = parse_date_range(str(year))
@@ -142,7 +157,7 @@ class RefugeesReturnees:
                     "dataset_hdx_id": dataset_id,
                     "resource_hdx_id": resource_id,
                     "warning": None,
-                    "error": None,
+                    "error": error,
                     "year": year,
                 }
                 dict_of_lists_add(self.data, data_type, new_row)
@@ -206,16 +221,21 @@ class RefugeesReturnees:
         return dataset
 
 
-def get_hrp_gho(iso: str, hrps: Dict[str, str], ghos: Dict[str, str]) -> Tuple[str, str]:
+def get_hrp_gho(
+    iso: str, hrps: Dict[str, str], ghos: Dict[str, str], missing_locations: List[str]
+) -> Tuple[str, str]:
+    values = {True: "Y", False: "N"}
     hrp = hrps.get(iso)
     if hrp is None:
         hrp = Country.get_hrp_status_from_iso3(iso)
-        hrp = "Y" if hrp else "N"
+        hrp = values.get(hrp)
+        if hrp is None:
+            missing_locations.append(iso)
         hrps[iso] = hrp
     gho = ghos.get(iso)
     if gho is None:
         gho = Country.get_gho_status_from_iso3(iso)
-        gho = "Y" if gho else "N"
+        gho = values.get(gho)
         ghos[iso] = gho
     return hrp, gho
 
