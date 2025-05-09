@@ -108,7 +108,9 @@ class RefugeesReturnees:
                         dataset["name"],
                         f"Could not find iso code {missing_location}",
                     )
-                error = f"Non matching country code(s) {','.join(set(missing_locations))}"
+                error = (
+                    f"Non matching country code(s) {','.join(set(missing_locations))}"
+                )
 
             year = row["Year"]
             start_date, end_date = parse_date_range(str(year))
