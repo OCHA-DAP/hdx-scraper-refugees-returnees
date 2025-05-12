@@ -16,7 +16,7 @@ charset-normalizer==3.4.2
     # via requests
 ckanapi==4.8
     # via hdx-python-api
-click==8.1.8
+click==8.2.0
     # via typer
 cydifflib==1.2.0
     # via hdx-python-utilities
@@ -75,7 +75,7 @@ libhxl==5.2.2
     #   hdx-python-country
 loguru==0.7.3
     # via hdx-python-utilities
-makefun==1.15.6
+makefun==1.16.0
     # via hdx-python-api
 markdown-it-py==3.0.0
     # via rich
@@ -158,7 +158,7 @@ ruamel-yaml==0.18.10
     # via hdx-python-utilities
 ruamel-yaml-clib==0.2.12
     # via ruamel-yaml
-setuptools==80.3.1
+setuptools==80.4.0
     # via ckanapi
 shellingham==1.5.4
     # via typer

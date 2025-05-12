@@ -66,7 +66,8 @@ def main(
                             join(
                                 "config",
                                 "hdx_dataset_static.yaml",
-                            )
+                            ),
+                            main,
                         )
                     )
                     dataset.create_in_hdx(

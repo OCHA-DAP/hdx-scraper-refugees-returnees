@@ -27,7 +27,7 @@ ckanapi==4.8
     # via
     #   -c requirements.txt
     #   hdx-python-api
-click==8.1.8
+click==8.2.0
     # via
     #   -c requirements.txt
     #   typer
@@ -133,7 +133,7 @@ loguru==0.7.3
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-makefun==1.15.6
+makefun==1.16.0
     # via
     #   -c requirements.txt
     #   hdx-python-api
@@ -283,7 +283,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==80.3.1
+setuptools==80.4.0
     # via
     #   -c requirements.txt
     #   ckanapi
