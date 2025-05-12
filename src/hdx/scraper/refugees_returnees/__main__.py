@@ -6,14 +6,14 @@ script then creates in HDX.
 """
 
 import logging
-from os.path import dirname, expanduser, join
+from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
 from hdx.data.user import User
 from hdx.facades.infer_arguments import facade
 from hdx.utilities.downloader import Download
-from hdx.utilities.path import temp_dir_batch
+from hdx.utilities.path import script_dir_plus_file, temp_dir_batch
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.refugees_returnees.refugees_returnees import RefugeesReturnees
@@ -62,10 +62,11 @@ def main(
                 for dataset_type in dataset_types:
                     dataset = ref_ret.generate_dataset(dataset_type)
                     dataset.update_from_yaml(
-                        path=join(
-                            dirname(__file__),
-                            "config",
-                            "hdx_dataset_static.yaml",
+                        path=script_dir_plus_file(
+                            join(
+                                "config",
+                                "hdx_dataset_static.yaml",
+                            )
                         )
                     )
                     dataset.create_in_hdx(
@@ -82,7 +83,7 @@ if __name__ == "__main__":
         main,
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
         user_agent_lookup=_USER_AGENT_LOOKUP,
-        project_config_yaml=join(
-            dirname(__file__), "config", "project_configuration.yaml"
+        project_config_yaml=script_dir_plus_file(
+            join("config", "project_configuration.yaml"), main
         ),
     )
