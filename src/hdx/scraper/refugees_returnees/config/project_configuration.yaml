@@ -2,7 +2,7 @@
 
 source_dataset: "unhcr-population-data-for-world"
 
-source_resource: "Demographics and locations of forcibly displaced and stateless persons (Global)"
+source_resource: "Demographics and locations of forcibly displaced and stateless people (Global)"
 
 output_datasets:
   refugees:
