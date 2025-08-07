@@ -1,56 +1,16 @@
-import filecmp
 from os.path import join
 
-import pytest
-from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
-from hdx.data.dataset import Dataset
+from hdx.utilities.compare import assert_files_same
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
-from hdx.utilities.useragent import UserAgent
 
-from hdx.scraper.refugees_returnees.refugees_returnees import RefugeesReturnees
+from hdx.scraper.refugees_returnees.pipeline import Pipeline
 
 
-class TestRefugeesReturnees:
-    @pytest.fixture(scope="function")
-    def configuration(self, config_dir):
-        UserAgent.set_global("test")
-        Configuration._create(
-            hdx_read_only=True,
-            hdx_site="prod",
-            project_config_yaml=join(config_dir, "project_configuration.yaml"),
-        )
-        return Configuration.read()
-
-    @pytest.fixture(scope="function")
-    def read_dataset(self, monkeypatch):
-        def read_from_hdx(dataset_name):
-            return Dataset.load_from_json(
-                join(
-                    "tests",
-                    "fixtures",
-                    "input",
-                    f"dataset-{dataset_name}.json",
-                )
-            )
-
-        monkeypatch.setattr(Dataset, "read_from_hdx", staticmethod(read_from_hdx))
-
-    @pytest.fixture(scope="class")
-    def fixtures_dir(self):
-        return join("tests", "fixtures")
-
-    @pytest.fixture(scope="class")
-    def input_dir(self, fixtures_dir):
-        return join(fixtures_dir, "input")
-
-    @pytest.fixture(scope="class")
-    def config_dir(self, fixtures_dir):
-        return join("src", "hdx", "scraper", "refugees_returnees", "config")
-
-    def test_refugees_returnees(
+class TestPipeline:
+    def test_pipeline(
         self,
         configuration,
         read_dataset,
@@ -60,7 +20,7 @@ class TestRefugeesReturnees:
     ):
         with HDXErrorHandler() as error_handler:
             with temp_dir(
-                "Test-refugees_returnees",
+                "Test_refugees_returnees",
                 delete_on_success=True,
                 delete_on_failure=False,
             ) as tempdir:
@@ -73,11 +33,12 @@ class TestRefugeesReturnees:
                         save=False,
                         use_saved=True,
                     )
-                    ref_ret = RefugeesReturnees(configuration, retriever, error_handler)
-                    dataset_types = ref_ret.get_data()
+
+                    pipeline = Pipeline(configuration, retriever, error_handler)
+                    dataset_types = pipeline.get_data()
                     assert dataset_types == ["refugees", "returnees"]
 
-                    dataset = ref_ret.generate_dataset("returnees")
+                    dataset = pipeline.generate_dataset("returnees")
                     assert dataset == {
                         "name": "hdx-hapi-returnees",
                         "title": "HDX HAPI - Affected People: Returnees",
@@ -106,12 +67,12 @@ class TestRefugeesReturnees:
                         }
                     ]
 
-                    assert filecmp.cmp(
+                    assert_files_same(
                         join(tempdir, "hdx_hapi_returnees_global.csv"),
                         join(fixtures_dir, "hdx_hapi_returnees_global.csv"),
                     )
 
-                    dataset = ref_ret.generate_dataset("refugees")
+                    dataset = pipeline.generate_dataset("refugees")
                     assert dataset == {
                         "name": "hdx-hapi-refugees",
                         "title": "HDX HAPI - Affected People: Refugees & Persons of "

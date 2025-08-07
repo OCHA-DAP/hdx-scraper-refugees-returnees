@@ -37,7 +37,7 @@ RETURNEE_POPULATION_GROUPS = [
 ]
 
 
-class RefugeesReturnees:
+class Pipeline:
     def __init__(
         self,
         configuration: Configuration,

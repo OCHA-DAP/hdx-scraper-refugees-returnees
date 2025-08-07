@@ -9,8 +9,8 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "hdx-scraper-refugees_returnees"
-requires-python = ">=3.12"
+name = "hdx-scraper-refugees-returnees"
+requires-python = ">=3.13"
 dependencies = [
   "hdx-python-api",
   "hdx-python-utilities",
@@ -25,3 +25,6 @@ test = [
   "pytest-cov"
 ]
 dev = ["pre-commit"]
+
+[project.scripts]
+run = "hdx.scraper.refugees_returnees.__main__:main"
