@@ -182,17 +182,15 @@ class Pipeline:
 
         dataset.add_other_location("world")
 
-        hxl_tags = self._configuration["hxl_tags"]
-        headers = list(hxl_tags.keys())
+        headers = self._configuration["headers"]
 
         if data_type == "returnees":
-            dataset.generate_resource_from_iterable(
-                headers,
-                self.data[data_type],
-                hxl_tags,
+            dataset.generate_resource(
                 self._temp_dir,
                 f"hdx_hapi_{data_type}_global.csv",
+                self.data[data_type],
                 self._configuration["resources"][data_type],
+                headers,
                 encoding="utf-8-sig",
             )
             return dataset
@@ -210,13 +208,12 @@ class Pipeline:
             )
             filename = f"hdx_hapi_{data_type}_global_{year_range.replace('-', '_')}.csv"
             rows = [r for r in self.data[data_type] if sy <= r["year"] <= ey]
-            dataset.generate_resource_from_iterable(
-                headers,
-                rows,
-                hxl_tags,
+            dataset.generate_resource(
                 self._temp_dir,
                 filename,
+                rows,
                 resource_data,
+                headers,
                 encoding="utf-8-sig",
             )
 

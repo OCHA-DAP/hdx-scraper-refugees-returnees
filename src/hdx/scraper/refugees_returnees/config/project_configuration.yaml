@@ -26,22 +26,22 @@ tags:
   returnees:
     - "returnees"
 
-hxl_tags:
-  origin_location_code: "#country+code+origin"
-  origin_has_hrp: "#meta+has_hrp+origin"
-  origin_in_gho: "#meta+in_gho+origin"
-  asylum_location_code: "#country+code+asylum"
-  asylum_has_hrp: "#meta+has_hrp+asylum"
-  asylum_in_gho: "#meta+in_gho+asylum"
-  population_group: "#population_group+code"
-  gender: "#gender+code"
-  age_range: "#age+range"
-  min_age: "#age+min"
-  max_age: "#age+max"
-  population: "#population"
-  reference_period_start: "#date+start"
-  reference_period_end: "#date+end"
-  dataset_hdx_id: "#meta+dataset_id"
-  resource_hdx_id: "#meta+resource_id"
-  warning: "#meta+warning"
-  error: "#meta+error"
+headers:
+  - origin_location_code
+  - origin_has_hrp
+  - origin_in_gho
+  - asylum_location_code
+  - asylum_has_hrp
+  - asylum_in_gho
+  - population_group
+  - gender
+  - age_range
+  - min_age
+  - max_age
+  - population
+  - reference_period_start
+  - reference_period_end
+  - dataset_hdx_id
+  - resource_hdx_id
+  - warning
+  - error
