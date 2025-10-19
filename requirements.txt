@@ -12,7 +12,7 @@ certifi==2025.10.5
     # via requests
 chardet==5.2.0
     # via frictionless
-charset-normalizer==3.4.3
+charset-normalizer==3.4.4
     # via requests
 ckanapi==4.8
     # via hdx-python-api
@@ -34,22 +34,24 @@ et-xmlfile==2.0.0
     # via openpyxl
 frictionless==5.18.1
     # via hdx-python-utilities
-hdx-python-api==6.5.1
+hdx-python-api==6.5.2
     # via hdx-scraper-refugees-returnees (pyproject.toml)
 hdx-python-country==3.9.8
-    # via hdx-python-api
-hdx-python-utilities==3.9.4
+    # via
+    #   hdx-scraper-refugees-returnees (pyproject.toml)
+    #   hdx-python-api
+hdx-python-utilities==3.9.5
     # via
     #   hdx-scraper-refugees-returnees (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
-humanize==4.13.0
+humanize==4.14.0
     # via frictionless
-idna==3.10
+idna==3.11
     # via
     #   email-validator
     #   requests
-ijson==3.4.0
+ijson==3.4.0.post0
     # via hdx-python-utilities
 inflect==7.5.0
     # via quantulum3
@@ -77,7 +79,7 @@ makefun==1.16.0
     # via hdx-python-api
 markdown-it-py==4.0.0
     # via rich
-marko==2.2.0
+marko==2.2.1
     # via frictionless
 markupsafe==3.0.3
     # via jinja2
@@ -87,7 +89,7 @@ more-itertools==10.8.0
     # via inflect
 num2words==0.5.14
     # via quantulum3
-numpy==2.3.3
+numpy==2.3.4
     # via pandas
 openpyxl==3.1.5
     # via hdx-python-utilities
@@ -101,9 +103,9 @@ ply==3.11
     #   libhxl
 pockets==0.9.1
     # via sphinxcontrib-napoleon
-pydantic==2.12.0
+pydantic==2.12.2
     # via frictionless
-pydantic-core==2.41.1
+pydantic-core==2.41.4
     # via pydantic
 pygments==2.19.2
     # via rich
@@ -131,7 +133,7 @@ quantulum3==0.9.2
     # via hdx-python-api
 ratelimit==2.2.1
     # via hdx-python-utilities
-referencing==0.36.2
+referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
