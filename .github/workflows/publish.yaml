@@ -46,4 +46,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: public.ecr.aws/unocha/hdx-scraper-refugees_returnees:${{ steps.tag_info.outputs.IMAGE_TAG }}
+          tags: public.ecr.aws/unocha/hdx-scraper-refugees-returnees:${{ steps.tag_info.outputs.IMAGE_TAG }}
