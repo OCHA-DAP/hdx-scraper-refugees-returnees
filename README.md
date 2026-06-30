@@ -3,7 +3,18 @@
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-refugees-returnees/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-refugees-returnees?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-This script pulls together global refugee and returnee data for use in HAPI. It creates two datasets on HDX.
+This script pulls together global refugee and returnee data for use in HAPI,
+reading a single UNHCR source dataset from HDX and creating two HAPI datasets.
+It makes 1 HDX read call (to the UNHCR "Demographics and locations of forcibly
+displaced and stateless people (Global)" dataset) and 2 HDX writes. The output
+consists of a refugees dataset (split into multiple CSV resources by 5-year date
+range, each up to a few MB) and a single returnees CSV (up to a few MB). The
+source CSV is parsed to classify population types into 10 refugee categories
+(REF, ROC, ASY, OIP, IOC, STA, OOC, HST, RST, NAT) and 3 returnee categories
+(RET, RDP, RRI); gender (Male/Female/All) and age ranges are extracted from
+column headers; records are grouped by year, country of origin, country of
+asylum, and population type; and each output row is enriched with HRP and GHO
+status. It is run every weekday.
 
 ## Development
 
