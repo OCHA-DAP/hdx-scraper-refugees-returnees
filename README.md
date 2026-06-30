@@ -1,4 +1,4 @@
-# Collector for refugees_returnees Datasets
+# Collector for Refugees and Returnees Datasets
 [![Build Status](https://github.com/OCHA-DAP/hdx-scraper-refugees-returnees/actions/workflows/run-python-tests.yaml/badge.svg)](https://github.com/OCHA-DAP/hdx-scraper-refugees-returnees/actions/workflows/run-python-tests.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-refugees-returnees/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-refugees-returnees?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -14,21 +14,49 @@ source CSV is parsed to classify population types into 10 refugee categories
 (RET, RDP, RRI); gender (Male/Female/All) and age ranges are extracted from
 column headers; records are grouped by year, country of origin, country of
 asylum, and population type; and each output row is enriched with HRP and GHO
-status. It is run every weekday.
+status. It runs every weekday at around 11 AM UTC and takes approximately
+5 minutes to complete.
+
+## Data Pipeline
+
+### API reads (~1 call per run)
+
+- **UNHCR source dataset** (1 read): downloads the UNHCR "Demographics and
+  locations of forcibly displaced and stateless people (Global)" CSV from HDX.
+
+### API writes (~2 calls per run)
+
+- **Refugees dataset** (1 write): multiple CSV resources partitioned by 5-year
+  date range, each up to a few MB.
+- **Returnees dataset** (1 write): a single CSV resource, up to a few MB.
+
+### Temporary files
+
+- None significant; data is processed in memory.
+
+### Uploaded files
+
+- Refugees dataset: multiple CSVs partitioned by 5-year date range (e.g.
+  2000–2004, 2005–2009, …), each up to a few MB.
+- Single returnees CSV, up to a few MB.
+
+### Transformations
+
+1. **Population type classification**: source population types are mapped to 10
+   refugee categories (REF, ROC, ASY, OIP, IOC, STA, OOC, HST, RST, NAT) and 3
+   returnee categories (RET, RDP, RRI).
+2. **Gender and age extraction**: gender (Male/Female/All) and age range values
+   are parsed from column headers.
+3. **Grouping**: records are aggregated by year, country of origin, country of
+   asylum, and population type.
+4. **HRP/GHO enrichment**: each output row is annotated with `has_hrp` and
+   `in_gho` flags looked up per ISO3 code.
 
 ## Development
 
 ### Environment
 
-Development is currently done using Python 3.13. We recommend using a virtual
-environment such as ``venv``:
-
-```shell
-    python -m venv venv
-    source venv/bin/activate
-```
-
-In your virtual environment, install all packages for development by running:
+Development is currently done using Python 3.13. Install packages with:
 
 ```shell
     pip install -r requirements.txt
@@ -77,26 +105,12 @@ To check if your changes pass pre-commit without committing, run:
     pre-commit run --all-files
 ```
 
-### Testing
-
-Ensure you have the required packages to run the tests:
-
-```shell
-    pip install -r requirements-test.txt
-```
-
-To run the tests and view coverage, execute:
-
-```shell
-    pytest -c --cov hdx
-```
-
 ## Packages
 
-[uv](https://github.com/astral-sh/uv) is used for package management.  If
-you’ve introduced a new package to the source code (i.e. anywhere in `src/`),
-please add it to the `project.dependencies` section of `pyproject.toml` with
-any known version constraints.
+[Hatch](https://hatch.pypa.io/) is used for package management. If you've
+introduced a new package to the source code (i.e. anywhere in `src/`), please
+add it to the `project.dependencies` section of `pyproject.toml` with any known
+version constraints.
 
 To add packages required only for testing, add them to the `test` section under
 `[project.optional-dependencies]`.
@@ -111,7 +125,8 @@ re-generate the files without committing by executing:
 
 ## Project
 
-[Hatch](https://hatch.pypa.io/) is used for project management. The project can be built using:
+[Hatch](https://hatch.pypa.io/) is used for project management. The project can be
+built using:
 
 ```shell
     hatch build
@@ -123,7 +138,7 @@ Linting and syntax checking can be run with:
     hatch fmt --check
 ```
 
-Tests can be executed using:
+To run the tests and view coverage, execute:
 
 ```shell
     hatch test
