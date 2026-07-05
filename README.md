@@ -14,8 +14,7 @@ source CSV is parsed to classify population types into 10 refugee categories
 (RET, RDP, RRI); gender (Male/Female/All) and age ranges are extracted from
 column headers; records are grouped by year, country of origin, country of
 asylum, and population type; and each output row is enriched with HRP and GHO
-status. It runs every weekday at around 11 AM UTC and takes approximately
-5 minutes to complete.
+status.
 
 ## Data Pipeline
 
