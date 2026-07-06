@@ -3,7 +3,6 @@
 
 import logging
 from copy import deepcopy
-from typing import Dict, List, Tuple
 
 from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_error_handler import HDXErrorHandler
@@ -57,7 +56,7 @@ class Pipeline:
             "refugees": [],
         }
 
-    def get_data(self) -> List[str]:
+    def get_data(self) -> list[str]:
         dataset = Dataset.read_from_hdx(self._configuration["source_dataset"])
         resource = [
             r
@@ -221,8 +220,8 @@ class Pipeline:
 
 
 def get_hrp_gho(
-    iso: str, hrps: Dict[str, str], ghos: Dict[str, str], missing_locations: List[str]
-) -> Tuple[str, str]:
+    iso: str, hrps: dict[str, str], ghos: dict[str, str], missing_locations: list[str]
+) -> tuple[str, str]:
     values = {True: "Y", False: "N"}
     hrp = hrps.get(iso)
     if hrp is None:
